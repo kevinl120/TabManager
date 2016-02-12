@@ -32,10 +32,17 @@ function saveTabs() {
 function openSaved() {
     chrome.storage.sync.get("1", function(urlArray) {
         console.log(urlArray);
-        chrome.windows.create({url: urlArray[1]});
+        chrome.windows.create({url: urlArray["1"]});
+    });
+}
+
+function printDetails() {
+    chrome.storage.sync.get(null, function(number) {
+        console.log(Object.keys(number).length);
     });
 }
 
 document.getElementById("duplicate").addEventListener('click', duplicateTabs);
 document.getElementById("save").addEventListener('click', saveTabs);
-document.getElementById("openSave").addEventListener('click', openSaved);
+document.getElementById("openSaved").addEventListener('click', openSaved);
+document.getElementById("printDetails").addEventListener('click', printDetails);
