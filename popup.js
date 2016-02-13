@@ -14,9 +14,11 @@ function duplicateTabs() {
     // })
 }
 
-function saveTabs() {
-
+function clearData() {
     chrome.storage.sync.clear();
+}
+
+function saveTabs() {
 
     chrome.tabs.query({currentWindow: true}, function(tabs) {
         var urlArray = [];
@@ -24,25 +26,58 @@ function saveTabs() {
             urlArray.push(tabs[i].url);
         }
 
-        chrome.storage.sync.set({"1": urlArray});
+        if (typeof numSaved() != 'undefined') {
+            var saveString = numSaved().toString;
+            chrome.storage.sync.set({saveString: urlArray});
+        } else {
+            chrome.storage.sync.set({"0": urlArray});
+        }
 
-    });
-}
+        reloadButtons();
 
-function openSaved() {
-    chrome.storage.sync.get("1", function(urlArray) {
-        console.log(urlArray);
-        chrome.windows.create({url: urlArray["1"]});
     });
 }
 
 function printDetails() {
-    chrome.storage.sync.get(null, function(number) {
-        console.log(Object.keys(number).length);
+    chrome.storage.sync.get(null, function(allObjects) {
+        console.log(Object.keys(allObjects).length);
+        console.log(allObjects);
     });
 }
 
+function numSaved() {
+    chrome.storage.sync.get(null, function(allObjects) {
+        console.log(Object.keys(allObjects).length);
+        return Object.keys(allObjects).length;
+    });
+}
+
+function reloadButtons() {
+    for (var i = 0; i < numSaved(); i++) {
+        var button = document.createElement("input");
+        button.type = "button";
+        button.value = i.toString();
+        button.addEventListener('click', function(){
+            chrome.storage.sync.get(button.value, function(urlArray) {
+                console.log(urlArray);
+            });
+        });
+        // button.onclick = function(i) {
+        //     // var string = Integer.toString(i);
+        //     chrome.storage.sync.get(i, function(urlArray) {
+        //         console.log(urlArray);
+        //         //chrome.windows.create({url: urlArray[i]});
+        //     });
+        // };
+        document.body.appendChild(button);
+    }
+}
+
+window.onload = function() {
+    reloadButtons();
+};
+
 document.getElementById("duplicate").addEventListener('click', duplicateTabs);
 document.getElementById("save").addEventListener('click', saveTabs);
-document.getElementById("openSaved").addEventListener('click', openSaved);
 document.getElementById("printDetails").addEventListener('click', printDetails);
+document.getElementById("clearData").addEventListener('click', clearData);
