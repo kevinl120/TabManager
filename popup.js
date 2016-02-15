@@ -19,19 +19,18 @@ function clearData() {
 }
 
 function saveTabs() {
-
     chrome.tabs.query({currentWindow: true}, function(tabs) {
         var urlArray = [];
         for (var i = 0; i < tabs.length; i++) {
             urlArray.push(tabs[i].url);
         }
 
-        if (typeof numSaved() != 'undefined') {
-            var saveString = numSaved().toString;
-            chrome.storage.sync.set({saveString: urlArray});
-        } else {
-            chrome.storage.sync.set({"0": urlArray});
-        }
+        numSaved(function(num) {
+            var key = num;
+            var obj = {};
+            obj[key] = urlArray;
+            chrome.storage.sync.set(obj)
+        });
 
         reloadButtons();
 
@@ -39,45 +38,41 @@ function saveTabs() {
 }
 
 function printDetails() {
+    numSaved(function(numSaved) {
+        console.log(numSaved);
+    });
     chrome.storage.sync.get(null, function(allObjects) {
-        console.log(Object.keys(allObjects).length);
+        //console.log(Object.keys(allObjects).length);
         console.log(allObjects);
     });
 }
 
-function numSaved() {
+function numSaved(callback) {
     chrome.storage.sync.get(null, function(allObjects) {
-        console.log(Object.keys(allObjects).length);
-        return Object.keys(allObjects).length;
+        callback(Object.keys(allObjects).length);
     });
 }
 
 function reloadButtons() {
-    for (var i = 0; i < numSaved(); i++) {
-        var button = document.createElement("input");
-        button.type = "button";
-        button.value = i.toString();
-        button.addEventListener('click', function(){
-            chrome.storage.sync.get(button.value, function(urlArray) {
-                console.log(urlArray);
-            });
-        });
-        // button.onclick = function(i) {
-        //     // var string = Integer.toString(i);
-        //     chrome.storage.sync.get(i, function(urlArray) {
-        //         console.log(urlArray);
-        //         //chrome.windows.create({url: urlArray[i]});
-        //     });
-        // };
-        document.body.appendChild(button);
-    }
+    // numSaved(function(num) {
+    //     for (var i = 0; i < num; i++) {
+    //         var button = document.createElement("input");
+    //         button.type = "button";
+    //         button.value = i;
+    //         button.addEventListener('click', function() {
+    //             chrome.storage.sync.get(button.value, function(urlArray) {
+    //                 chrome.windows.create({url: urlArray});
+    //             })
+    //         });
+    //         document.body.appendChild(button);
+    //     }
+    // });
 }
 
 window.onload = function() {
-    reloadButtons();
+    document.getElementById("duplicateTabs").addEventListener('click', duplicateTabs);
+    document.getElementById("saveTabs").addEventListener('click', saveTabs);
+    document.getElementById("printDetails").addEventListener('click', printDetails);
+    document.getElementById("clearData").addEventListener('click', clearData);
+    //reloadButtons();
 };
-
-document.getElementById("duplicate").addEventListener('click', duplicateTabs);
-document.getElementById("save").addEventListener('click', saveTabs);
-document.getElementById("printDetails").addEventListener('click', printDetails);
-document.getElementById("clearData").addEventListener('click', clearData);
