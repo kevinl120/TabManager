@@ -59,6 +59,7 @@ function reloadButtons() {
     //         var button = document.createElement("input");
     //         button.type = "button";
     //         button.value = i;
+    //         button.id = i.toString();
     //         button.addEventListener('click', function() {
     //             chrome.storage.sync.get(button.value, function(urlArray) {
     //                 chrome.windows.create({url: urlArray});
