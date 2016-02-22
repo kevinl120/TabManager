@@ -1,3 +1,11 @@
+
+
+
+
+
+// JAVASCRIPT CODE BELOW
+
+
 function duplicateTabs() {
     chrome.tabs.query({currentWindow: true}, function(tabs) {
         var urlArray = [];
@@ -71,9 +79,9 @@ function reloadButtons() {
 }
 
 window.onload = function() {
-    document.getElementById("duplicateTabs").addEventListener('click', duplicateTabs);
-    document.getElementById("saveTabs").addEventListener('click', saveTabs);
-    document.getElementById("printDetails").addEventListener('click', printDetails);
-    document.getElementById("clearData").addEventListener('click', clearData);
+    document.getElementById("duplicateTabs").addEventListener("click", duplicateTabs);
+    document.getElementById("saveTabs").addEventListener("click", saveTabs);
+    document.getElementById("printDetails").addEventListener("click", printDetails);
+    document.getElementById("clearData").addEventListener("click", clearData);
     //reloadButtons();
 };
