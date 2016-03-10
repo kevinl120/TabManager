@@ -1,9 +1,17 @@
 .currentSession {
-    
+
 }
 
-.tabGroupButtonTEST
-{
+.tabList {
+    color: #222;
+    background: rgba(255,255,255,.9);
+    border-spacing: 2px;
+    border-color: gray;
+    font-family: arial,sans-serif;
+    border-bottom: 1px #e5e5e5 solid;
+}
+
+.tabGroupButtonTEST {
     border-style: solid;
     border-color: transparent;
     border-width: 1px;

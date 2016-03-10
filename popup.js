@@ -3,6 +3,8 @@
 
 
 
+
+
 // JAVASCRIPT CODE BELOW
 
 
@@ -24,6 +26,7 @@ function duplicateTabs() {
 
 function clearData() {
     chrome.storage.sync.clear();
+    reloadButtons();
 }
 
 function saveTabs() {
@@ -40,7 +43,7 @@ function saveTabs() {
             chrome.storage.sync.set(obj)
         });
 
-        reloadButtons();
+        //reloadButtons();
 
     });
 }
@@ -53,6 +56,7 @@ function printDetails() {
         //console.log(Object.keys(allObjects).length);
         console.log(allObjects);
     });
+    //reloadButtons();
 }
 
 function numSaved(callback) {
@@ -62,20 +66,21 @@ function numSaved(callback) {
 }
 
 function reloadButtons() {
-    // numSaved(function(num) {
-    //     for (var i = 0; i < num; i++) {
-    //         var button = document.createElement("input");
-    //         button.type = "button";
-    //         button.value = i;
-    //         button.id = i.toString();
-    //         button.addEventListener('click', function() {
-    //             chrome.storage.sync.get(button.value, function(urlArray) {
-    //                 chrome.windows.create({url: urlArray});
-    //             })
-    //         });
-    //         document.body.appendChild(button);
-    //     }
-    // });
+    // window.location.reload();
+    numSaved(function(num) {
+        for (var i = 0; i < num; i++) {
+            var button = document.createElement("input");
+            button.type = "button";
+            button.value = i;
+            button.id = i.toString();
+            button.addEventListener('click', function() {
+                chrome.storage.sync.get(button.value, function(urlArray) {
+                    chrome.windows.create({url: urlArray});
+                })
+            });
+            document.getElementById("buttonHolder").appendChild(button);
+        }
+    });
 }
 
 window.onload = function() {
@@ -83,5 +88,5 @@ window.onload = function() {
     document.getElementById("saveTabs").addEventListener("click", saveTabs);
     document.getElementById("printDetails").addEventListener("click", printDetails);
     document.getElementById("clearData").addEventListener("click", clearData);
-    //reloadButtons();
+    document.getElementById("reloadButtons").addEventListener("click", reloadButtons);
 };
