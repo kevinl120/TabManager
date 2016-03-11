@@ -1,4 +1,8 @@
-document.addEventListener('DOMContentLoaded', initDOM, false);
+// document.addEventListener('DOMContentLoaded', initDOM, false);
+
+window.onload = function() {
+    setUpCurrent();
+};
 
 function initDOM() {
     setUpCurrent();
@@ -13,15 +17,12 @@ function setUpCurrent() {
     chrome.windows.getCurrent({ populate: true }, function(window) {
         var winString = '<div class="tabs tabslocal">';
         window.tabs.forEach(function(tab) {
-            if (tab.pinned !== undefined) {
-                localStorage.supportPinned = 1;
-            }
             var favicon = (tab.favIconUrl !== '' && tab.favIconUrl !== undefined) ? tab.favIconUrl : 'chrome://favicon/' + tab.url;
-            winString += '<div style="float: left"><img id="tabimgl' + tab.id + '" windowid="winl' + window.id + '" class="tabimg tabimglocal" url="' + tab.url + '" src="' + favicon + '" title="' + tab.title.replace(/\"/g, "'") + '" /></div>';
+            winString += '<div><img class="tabimg" src="' + favicon + '"/></div>';
         });
         winString += '</div>';
         console.log(winString);
-        $('#current').append(winString);
+        $("#current").append(winString);
     });
 }
 

@@ -1,17 +1,18 @@
-
 .overview {
     width: 300px;
 }
-
 .sessions {
     margin-top: 30px;
     margin-bottom: 30px;
 }
-
 .session {
     padding: 0 9px 0 9px;
 }
-
+.tabs img {
+    margin: 2px;
+    width: 16px;
+    height: 16px;
+}
 
 /*.currentSession {
 
