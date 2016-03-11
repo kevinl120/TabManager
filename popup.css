@@ -1,4 +1,19 @@
-.currentSession {
+
+.overview {
+    width: 300px;
+}
+
+.sessions {
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+.session {
+    padding: 0 9px 0 9px;
+}
+
+
+/*.currentSession {
 
 }
 
@@ -30,4 +45,4 @@
     font-size: 12px;
     vertical-align: middle;
     transition: border-color .05s linear;
-}
+}*/
