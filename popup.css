@@ -1,14 +1,26 @@
+body {
+    background: rgb(230, 230, 230);
+}
+.title {
+    font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+}
 .overview {
     width: 300px;
-}
-.sessions {
-    margin-top: 30px;
-    margin-bottom: 30px;
+    overflow-y: auto;
 }
 .session {
-    padding: 0 9px 0 9px;
+    height: 60px;
+    width: 95%;
+    margin: 10px auto 10px auto;
+    overflow-y: auto;
+    background: rgb(215, 215, 215);
 }
-.tabs img {
+
+/*.currentSession {
+
+}*/
+
+.tabimg {
     margin: 2px;
     width: 16px;
     height: 16px;

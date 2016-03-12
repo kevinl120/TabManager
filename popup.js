@@ -1,32 +1,51 @@
 // document.addEventListener('DOMContentLoaded', initDOM, false);
 
-window.onload = function() {
-    setUpCurrent();
-};
+$(document).ready(initDOM);
 
 function initDOM() {
     setUpCurrent();
-}
 
-var getWindowName = function(name) {
-    var names = JSON.parse(localStorage.tempWindowNames);
-    return names[name];
-};
-
-function setUpCurrent() {
-    chrome.windows.getCurrent({ populate: true }, function(window) {
-        var winString = '<div class="tabs tabslocal">';
-        window.tabs.forEach(function(tab) {
-            var favicon = (tab.favIconUrl !== '' && tab.favIconUrl !== undefined) ? tab.favIconUrl : 'chrome://favicon/' + tab.url;
-            winString += '<div><img class="tabimg" src="' + favicon + '"/></div>';
-        });
-        winString += '</div>';
-        console.log(winString);
-        $("#current").append(winString);
+    $(document).on("click", ".session", function() {
+        if ($(this).parent().attr('id') === 'current') {
+            chrome.windows.getCurrent({ populate: true }, function(window) {
+                var windowData = {};
+                windowData.tabs = [];
+                window.tabs.forEach(function(tab) {
+                    windowData.tabs.push({
+                        url: tab.url,
+                        title: tab.title,
+                        favicon: (tab.favIconUrl !== '' && tab.favIconUrl !== undefined) ? tab.favIconUrl : '',
+                        pinned: (tab.pinned) ? true : false
+                    });
+                });
+                // windowData = JSON.stringify(windowData);
+                // console.log(windowData);
+                //  chrome.extension.sendRequest({tabs: windowData.tabs});
+                // console.log(window.tabs);
+            });
+        }
+        // var windowId = parseInt($(this).parent().parent().attr('id').substring(4),10);
+        // chrome.extension.sendRequest({tabs: TCWindows[windowId].tabs});
     });
 }
 
+function getCurrentWindowData(callback) {
 
+}
+
+function setUpCurrent() {
+    chrome.windows.getAll({ populate: true }, function(windows) {
+        windows.forEach(function(currentWindow) {
+            var winString = '<div class="session">';
+            currentWindow.tabs.forEach(function(tab) {
+                var favicon = (tab.favIconUrl !== '' && tab.favIconUrl !== undefined) ? tab.favIconUrl : 'chrome://favicon/' + tab.url;
+                winString += '<img class="tabimg" src="' + favicon + '"/>';
+            });
+            winString += '</div>';
+            $("#current").append(winString);
+        });
+    });
+}
 
 
 // OLD JAVASCRIPT CODE BELOW
